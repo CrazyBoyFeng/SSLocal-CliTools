@@ -18,7 +18,7 @@ If "%1"=="Start" (
 
 Call :EnableProxy
 Echo 启动 %~n0
-sslocal.exe -b 127.0.0.1:1080 -s server:443 -m plain -k password --plugin v2ray-plugin --plugin-opts tls;host=serverserver;path=/path --acl bypass-lan-china.acl
+sslocal.exe -b "127.0.0.1:1080" -s "server:443" -m "plain" -k "password" --plugin "v2ray-plugin" --plugin-opts "tls;host=host;path=/path" --acl "bypass-lan-china.acl"
 Set ExitCode=%ErrorLevel%
 Call :DisableProxy
 If Not "%ExitCode%"=="0" (
