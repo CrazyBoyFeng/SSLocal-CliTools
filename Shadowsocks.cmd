@@ -1,10 +1,12 @@
 @Echo off
+SetLocal EnableDelayedExpansion
+
 Set proxy=127.0.0.1:1080
 Set server=server.host
 Set serverport=443
 Set serverpath=/
 Set direct=*.baidu.com;*.qq.com
-SetLocal EnableDelayedExpansion
+
 Title %~n0
 CD /D "%~dp0"
 
@@ -24,19 +26,19 @@ If /I "%1"=="Start" (
 
 Call :EnableProxy
 Echo 启动 %~n0
-sslocal.exe --protocol "http" -b "%proxy%" -s "%server%:%serverport%" -m "plain" -k "password" --plugin "v2ray-plugin" --plugin-opts "tls;host=%server%;path=%serverpath%" --acl "bypass-lan-china.acl"
-Set ExitCode=%ErrorLevel%
+sslocal.exe --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "plain" -k "password" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
+Set ExitCode=!ErrorLevel!
 Call :DisableProxy
-If Not "%ExitCode%"=="0" (
+If Not "!ExitCode!"=="0" (
     Echo Exit Code: %ExitCode%
 )
 Pause
-Exit %ExitCode%
+Exit !ExitCode!
 
 :EnableProxy
 Echo 设置代理
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyOverride /t REG_SZ /d "%direct%;<local>" /f >NUL
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "%proxy%" /f >NUL
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyOverride /t REG_SZ /d "!direct!;<local>" /f >NUL
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "!proxy!" /f >NUL
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f >NUL
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v AutoConfigURL /f >NUL 2>NUL
 Goto :EOF
