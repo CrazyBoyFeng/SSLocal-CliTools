@@ -8,14 +8,14 @@ SetLocal EnableDelayedExpansion
 Title %~n0
 CD /D "%~dp0"
 
-If "%1"=="Start" (
+If /I "%1"=="Start" (
     Start /Min Cmd /C "%~dpnx0"
     Exit
-) Else If "%1"=="Install" (
+) Else If /I "%1"=="Install" (
     Call :Install
     Pause
     Exit
-) Else If "%1"=="Remove" (
+) Else If /I "%1"=="Remove" (
     TaskKill /F /IM sslocal*
     Call :DisableProxy
     Pause
