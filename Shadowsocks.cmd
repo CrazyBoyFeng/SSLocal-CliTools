@@ -5,6 +5,8 @@ Set proxy=127.0.0.1:1080
 Set server=server.host
 Set serverport=443
 Set serverpath=/
+Set method=plain
+Set password=password
 Set direct=*.baidu.com;*.qq.com
 
 Title %~n0
@@ -26,7 +28,7 @@ If /I "%1"=="Start" (
 
 Call :EnableProxy
 Echo 启动 %~n0
-sslocal.exe --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "plain" -k "password" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
+sslocal.exe --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "!method!" -k "!password!" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
 Set ExitCode=!ErrorLevel!
 Call :DisableProxy
 If Not "!ExitCode!"=="0" (
