@@ -27,7 +27,7 @@ If /I "%1"=="Install" (
 
 Call :EnableProxy
 Echo 启动 %~n0
-sslocal.exe --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "!method!" -k "!password!" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
+sslocal.exe -v --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "!method!" -k "!password!" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
 Set ExitCode=!ErrorLevel!
 Call :DisableProxy
 If Not "!ExitCode!"=="0" (
