@@ -54,4 +54,4 @@ Goto :EOF
 
 :Install
 Echo 开机启动
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v %~n0 /t REG_SZ /d "%~dpnx0 Start" /f >NUL
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v %~n0 /t REG_SZ /d "Start /Min Cmd /C \"%~dpnx0\"" /f >NUL
