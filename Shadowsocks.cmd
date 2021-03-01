@@ -9,12 +9,12 @@ If /I "%1"=="Start" (
 ) Else If /I "%1"=="Install" (
     Call :Install
     Pause
-    Exit
+    GoTo :EOF
 ) Else If /I "%1"=="Remove" (
     TaskKill /F /IM sslocal*
     Call :DisableProxy
     Pause
-    Exit
+    GoTo :EOF
 )
 
 Set proxy=127.0.0.1:1080
@@ -42,16 +42,16 @@ Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v Pr
 Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "!proxy!" /f >NUL
 Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f >NUL
 Reg Delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v AutoConfigURL /f >NUL 2>NUL
-Goto :EOF
+GoTo :EOF
 
 :DisableProxy
 Echo 取消代理
 Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f >NUL
 Rem Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "" /f >NUL
 Rem Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyOverride /t REG_SZ /d "" /f >NUL
-Goto :EOF
+GoTo :EOF
 
 :Install
 Echo 开机启动
 Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v %~n0 /t REG_SZ /d "\"%~dpnx0\" Start" /f >NUL
-Goto :EOF
+GoTo :EOF
