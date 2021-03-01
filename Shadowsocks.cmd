@@ -17,29 +17,30 @@ If /I "%1"=="Start" (
     GoTo :EOF
 )
 
-Set proxy=127.0.0.1:1080
-Set server=server.host
-Set serverport=443
-Set serverpath=/
-Set method=plain
-Set password=password
-Set direct=*.baidu.com;*.qq.com
+Set Local=0.0.0.0
+Set LocalPort=1080
+Set Server=Server.Address
+Set ServerPort=443
+Set ServerPath=/
+Set Method=plain
+Set Password=Password
+Set Direct=*.baidu.com;*.qq.com
 
 Call :EnableProxy
 Echo 启动 %~n0
-sslocal.exe -v --protocol "http" -b "!proxy!" -s "!server!:!serverport!" -m "!method!" -k "!password!" --plugin "v2ray-plugin" --plugin-opts "tls;host=!server!;path=!serverpath!" --acl "bypass-lan-china.acl"
+sslocal.exe -v --protocol "http" -b "!Local!:!LocalPort!" -s "!Server!:!ServerPort!" -m "!Method!" -k "!Password!" --plugin "v2ray-plugin" --plugin-opts "tls;host=!Server!;path=!ServerPath!" --acl "bypass-lan-china.acl"
 Set ExitCode=!ErrorLevel!
 Call :DisableProxy
 If Not "!ExitCode!"=="0" (
-    Echo Exit Code: %ExitCode%
+    Echo Exit Code: !ExitCode!
 )
 Pause
 Exit !ExitCode!
 
 :EnableProxy
 Echo 设置代理
-Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyOverride /t REG_SZ /d "!direct!;<local>" /f >NUL
-Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "!proxy!" /f >NUL
+Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyOverride /t REG_SZ /d "!Direct!;<local>" /f >NUL
+Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "localhost:!ProxyPort!" /f >NUL
 Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f >NUL
 Reg Delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v AutoConfigURL /f >NUL 2>NUL
 GoTo :EOF
