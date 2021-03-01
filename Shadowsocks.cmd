@@ -1,20 +1,12 @@
 @Echo off
-Rem 如果需要最小化启动并不等待返回请调用 Start /Min "%~dpnx0"
-Rem 如果需要最小化启动并得到返回值请调用 Start /Min /Wait "%~dpnx0"
 SetLocal EnableDelayedExpansion
-
-Set proxy=127.0.0.1:1080
-Set server=server.host
-Set serverport=443
-Set serverpath=/
-Set method=plain
-Set password=password
-Set direct=*.baidu.com;*.qq.com
-
 Title %~n0
 CD /D "%~dp0"
 
-If /I "%1"=="Install" (
+If /I "%1"=="Start" (
+    Start /Min Cmd /C "%~dpnx0"
+    GoTo :EOF
+) Else If /I "%1"=="Install" (
     Call :Install
     Pause
     Exit
@@ -24,6 +16,14 @@ If /I "%1"=="Install" (
     Pause
     Exit
 )
+
+Set proxy=127.0.0.1:1080
+Set server=server.host
+Set serverport=443
+Set serverpath=/
+Set method=plain
+Set password=password
+Set direct=*.baidu.com;*.qq.com
 
 Call :EnableProxy
 Echo 启动 %~n0
@@ -53,5 +53,5 @@ Goto :EOF
 
 :Install
 Echo 开机启动
-Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v %~n0 /t REG_SZ /d "Start /Min /Wait \"%~dpnx0\"" /f >NUL
+Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v %~n0 /t REG_SZ /d "\"%~dpnx0\" Start" /f >NUL
 Goto :EOF
