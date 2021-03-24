@@ -12,6 +12,7 @@ If /I "%1"=="Start" (
     GoTo :EOF
 ) Else If /I "%1"=="Remove" (
     TaskKill /F /IM sslocal*
+    TaskKill /F /IM v2ray-plugin*
     Call :DisableProxy
     Pause
     GoTo :EOF
